@@ -1,0 +1,12 @@
+﻿  BaseField.cpp
+  BaseValidator.cpp
+  ClassNames.cpp
+  CurrencyNames.cpp
+  DestinationNames.cpp
+  Form.cpp
+  IdValidator.cpp
+  NoDigitValidator.cpp
+c:\users\binya\desktop\study\3\b\oop\class\ex2a\make\project3\project3\nodigitvalidator.cpp(19): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+  Generating Code...
+  Project3.vcxproj -> C:\Users\binya\Desktop\study\3\b\oop\class\ex2a\make\Project3\Debug\Project3.exe
