@@ -1,0 +1,7 @@
+﻿  Calculator.cpp
+c:\users\binya\desktop\study\3\b\oop\class\ex3-last\oop3\project1\calculator.cpp(226): warning C4101: 'e': unreferenced local variable
+c:\users\binya\desktop\study\3\b\oop\class\ex3-last\oop3\project1\calculator.cpp(284): warning C4018: '<': signed/unsigned mismatch
+c:\users\binya\desktop\study\3\b\oop\class\ex3-last\oop3\project1\calculator.cpp(350): warning C4018: '>=': signed/unsigned mismatch
+c:\users\binya\desktop\study\3\b\oop\class\ex3-last\oop3\project1\calculator.cpp(398): warning C4018: '>': signed/unsigned mismatch
+c:\users\binya\desktop\study\3\b\oop\class\ex3-last\oop3\project1\calculator.cpp(399): warning C4018: '<': signed/unsigned mismatch
+  Project1.vcxproj -> C:\Users\binya\Desktop\study\3\b\oop\class\ex3-last\OOP3\Debug\Project1.exe

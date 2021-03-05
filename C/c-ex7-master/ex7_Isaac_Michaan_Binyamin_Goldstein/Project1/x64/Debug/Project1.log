@@ -1,0 +1,19 @@
+﻿  Add.cpp
+  BinaryOperation.cpp
+  Calculator.cpp
+c:\temp\ex3\project1\calculator.cpp(226): warning C4101: 'e': unreferenced local variable
+  CalculatorItem.cpp
+  Circle.cpp
+c:\temp\ex3\project1\circle.cpp(42): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\temp\ex3\project1\circle.cpp(42): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+  InvalidArg.cpp
+  main.cpp
+  Multiply.cpp
+  Rectangle.cpp
+  Shape.cpp
+  Subtraction.cpp
+  Triangle.cpp
+  Utils.cpp
+c:\temp\ex3\project1\utils.cpp(18): warning C4101: 'e': unreferenced local variable
+  Generating Code...
+  Project1.vcxproj -> C:\temp\ex3\x64\Debug\Project1.exe
