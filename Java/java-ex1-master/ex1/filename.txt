@@ -1,0 +1,15 @@
+http://cs.hac.ac.il
+http://this_url_does_not_exists
+https://docs.oracle.com/en/java/javase/11/docs/api/index.html
+this is not a valid url
+
+http://stackoverflow.com/users/9999999/not-a-real-user
+https://www.geeksforgeeks.org/check-if-url-is-valid-or-not-in-java/
+cs.hac.ac.il
+http://cs.hac.ac.il/projects/www/2011/projects_2011/dp_hbyt_files/shapeimage_2.png
+https://developer.mozilla.org/en-US/search?q=URL
+http://cs.hac.ac.il?a=123
+http://cs.hac.ac.il?a?
+cs.hac.ac.il
+http://cs.hac.ac.il:8888
+http://cs.hac.ac.il/projects/www/2011/projects_2011/dp_hbyt_files/shapeimage_2.png
