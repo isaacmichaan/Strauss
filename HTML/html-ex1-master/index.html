@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>landing page</title>
+    <style>
+        .nowrap {
+        white-space: nowrap ;
+    }
+    </style>
+</head>
+
+<body style="background-color: lightblue">
+    <!-- Text align to Logo -->
+    <h1 style="float:left"> <img src="http://cs.hac.ac.il/design/hadassah-logo.png" alt="Hadassah Logo" height="65" width="100"> </h1>
+    <h1 style="text-align:center"> <b> Welcome to Hadassah College </b> </h1>
+
+    <hr>
+
+    <div style="background:cornflowerblue" class="jumbotron">
+        <br>
+        <br>
+        <div style="text-align:center" class="container">
+        <!-- First Table -->
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <table id="lefttable" class="table table-bordered">
+                        <tr class="table-primary">
+                            <th> Name: </th>
+                            <td> Internet Programming </td>
+                        </tr>
+                        <tr class="table-primary">
+                            <th> Year: </th>
+                            <td> 2019 </td>
+                        </tr>
+                        <tr class="table-primary">
+                            <th> Semester: </th>
+                            <td> 1st </td>
+                        </tr>
+                        <tr class="table-primary">
+                            <th> Hour: </th>
+                            <td> 11:30 a.m </td>
+                        </tr>
+                        <tr class="table-primary">
+                            <th> Place: </th>
+                            <td> Campus Strauss </td>
+                        </tr>
+                        <tr class="table-primary">
+                            <th class="table-primary"> <a href="https://mowgli.hac.ac.il/course/view.php?id=12532" target="_blank"> Course Page </a> </th>
+                            <td> </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="displaytable" class="col-sm-12 col-md-6 col-lg-6">
+                    <img src = "dog.png" alt="Hadassah Logo" height="300" width="300">
+                    <div style="float:right; text-align: left; width:100%" id="righttable" class="col-sm-6 col-md-4 col-lg-4">
+                        <ul>
+                            <li> <b> Description: </b> </li>
+                        </ul>
+                        <p class="nowrap" style="font-size: small"> A hardworking and highly motivated Third year B.Sc Computer Science graduate,
+                            looking for a career opportunity.</p>
+                        <p class="nowrap" style="font-size: small"> 'Success requires two keys - Persistence and Patience. Persistence moves us forward while Patience helps us not to give up' </p>
+                        <ul>
+                        <li> <b> Languages: </b> </li>
+                        </ul>
+                        <p class="nowrap" style="font-size: small">
+                            <b> Programming Languages: </b> C++, C, Python, Html, CSS, JavaScript, SQL, x86 Assembly <br>
+                            <b> Workspaces: </b> Eclipse, Visual Studio, PyCharm <br>
+                            <b> Operating Systems: </b> Linux, Windows <br>
+                            <b> Management: </b> Marketing, Management, Finance, Accounting
+                        </p>
+                        <ul>
+                            <li> <b> Links: </b> </li>
+                        </ul>
+                        <p style="font-size: small">
+                           <b> Github: </b>  <a href="https://github.com/isaacmichaan" target="_blank"> https://github.com/isaacmichaan </a>
+                           <b> Merit-pages: </b> <a href="http://meritpages.com/isaacmichaan" target="_blank"> http://meritpages.com/isaacmichaan </a>
+                        </p>
+                    </div>
+                    <p> <b> Name: </b> Isaac Yossef Michaan </p>
+                    <p> <b> E-mail: </b> isaacmichaan@hotmail.com </p>
+                    <p class="col-sm"> <button id="button" type="button" class="btn btn-primary"> <span onclick="start()" id="Details"> <b> Details </b> </span> </button> </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("righttable").style.display = "none";
+        let flag = true;
+        let left = 0,
+            id,
+            ed;
+
+        function start() {
+            if (flag) {
+                id = setInterval(goRight, 10);
+                flag = false;
+            }else if (!flag){
+                ed = setInterval(goLeft, 10);
+                flag = true;
+            }
+        }
+
+        function goRight() {
+            document.getElementById("lefttable").style.display = "none";
+            document.getElementById("Details").innerHTML = "Return";
+            document.getElementById("righttable").style.display = "";
+
+            let elem = document.getElementById("displaytable");
+            left++;
+            elem.style.right = left + "px";
+            if (left == 350) {
+                clearInterval(id);
+            }
+        }
+
+        function goLeft() {
+            document.getElementById("lefttable").style.display = "";
+            document.getElementById("Details").innerHTML = "Details";
+            document.getElementById("righttable").style.display = "none";
+
+            let elem = document.getElementById("displaytable");
+            left = -1;
+            elem.style.right = "0px";
+            if (left < 1) {
+                clearInterval(ed);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function(){
+            document.getElementById('button').addEventListener('click', press);
+        }, false);
+
+    </script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

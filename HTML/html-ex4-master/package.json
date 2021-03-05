@@ -1,0 +1,35 @@
+{
+  "name": "loginapp",
+  "version": "1.0.0",
+  "description": "a simple authentication system",
+  "main": "app.js",
+  "dependencies": {
+    "all": "^0.0.0",
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-messages": "*",
+    "express-session": "^1.17.0",
+    "express-validator": "^3.2.0",
+    "mongodb": "^3.5.2",
+    "mongoose": "^5.8.10",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.1",
+    "passport-http": "*",
+    "passport-local": "*",
+    "pug": "^2.0.4",
+    "sequelize": "^5.21.3",
+    "serve-favicon": "^2.5.0",
+    "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Parikshit",
+  "license": "ISC"
+}

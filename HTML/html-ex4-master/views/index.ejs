@@ -1,0 +1,147 @@
+<%- include("layouts/layout") -%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <h1>Github search</h1>
+            <h6> User name</h6>
+            <label><input type="text" style="width:500px" id="input"/></label>
+            <h6> Enter a github user name</h6>
+            <button type="button" class="btn btn-primary" id="search">Search</button>
+            <button type="button" class="btn btn-success" id="save">Save</button>
+            <button type="button" class="btn btn-danger" id="delete">Delete</button>
+            <div id="warning"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="first" class="col-sm-12 col-md-6 col-lg-6">
+            <div id="data"></div>
+        </div>
+
+        <div id="second" class="col-sm-12 col-md-6 col-lg-6">
+            <div style="background:whitesmoke" class="jumbotron" id="save_data"> <h6 class="alert alert-info" role="alert"> Saved: </h6> </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("first").style.display = "none";
+    try {
+        const http = new XMLHttpRequest();
+        http.open("GET", '/users1');
+        http.setRequestHeader("Content-Type", "application/json");
+        http.send();
+        http.onload = () => {
+            console.log("JJ");
+            document.querySelector("#save_data").innerHTML = "";
+            document.querySelector("#save_data").innerHTML += '<h6 class="alert alert-info" role="alert"> Saved: </h6>';
+            let users = JSON.parse(http.responseText);
+            for (let i = 0; i < users.value.length; i++) {
+                document.querySelector("#save_data").innerHTML += '<li> <a target="_blank" href=' + "https://github.com/" + users.value[i] + ">" + users.value[i] + "</a> </li>";
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+    (function () {  // working in local namespace
+        async function postData(url = '') {
+            const response = await fetch(url, {headers: { 'Content-Type': 'application/json'},});
+            return await response.json(); // parses JSON response into native JavaScript objects
+        }
+
+        // the function that triggers an Ajax call
+        async function searchData() {
+            try {
+                const info = await postData('https://api.github.com/users/' + document.getElementById('input').value.toLowerCase());
+
+                if (info.message != "Not Found") {
+                    let name = '<h6 class="alert alert-info" role="alert">' + info.login + "</h6>";
+                    let repos = "<h3>" + "Repositories" + "</h3>" + "<ol>";
+                    const repos_url = await postData(info.repos_url);
+
+                    let check = true;
+                    for (i in repos_url) {
+                        repos += '<li> <a target="_blank" href=' + repos_url[i].html_url + ">" + repos_url[i].full_name + "</a> </li>";
+                        check = false;
+                    }
+                    if (check)
+                        repos += "No repositories.";
+                    repos += "</ol>";
+
+                    let foll = "<h3>" + "Followers" + "</h3>" + "<ol>";
+                    const follower = await postData(info.followers_url);
+                    check = true;
+                    for (i in follower) {
+                        foll += '<li> <a target="_blank" href=' + follower[i].html_url + ">" + follower[i].login + "</a> </li>";
+                        check = false;
+                    }
+                    if (check)
+                        foll += "No followers.";
+                    foll += "</ol>";
+
+                    // display the HTML
+                    document.getElementById("first").style.display = "";
+                    document.querySelector("#data").innerHTML = '<div style="background:whitesmoke" class="jumbotron">' + name + repos + foll + "</div>";
+                    document.querySelector("#warning").innerHTML = "";
+                }
+                else {
+                    document.getElementById("first").style.display = "none";
+                    document.querySelector("#warning").innerHTML = '<h6 class="alert alert-warning" role="alert">' + "no such user!" + "</h6>";
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function saveData() {
+            try {
+                const info = await postData('https://api.github.com/users/' + document.getElementById('input').value.toLowerCase());
+                if (info.message != "Not Found") {
+                    const http = new XMLHttpRequest();
+                    http.open("POST", '/users1');
+                    http.setRequestHeader("Content-Type", "application/json");
+                    const data = JSON.stringify({value: document.getElementById('input').value.toLowerCase()});
+                    http.send(data);
+                    http.onload = () => {
+                        if (JSON.parse(http.responseText).value)
+                            document.querySelector("#save_data").innerHTML += '<li> <a target="_blank" href=' + "https://github.com/" + document.getElementById('input').value.toLowerCase() + ">" + document.getElementById('input').value.toLowerCase() + "</a> </li>";
+                    };
+                    document.querySelector("#warning").innerHTML = '<h6 class="alert alert-warning" role="alert">' + "User saved!" + "</h6>";
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function deleteData() {
+            try {
+                const http = new XMLHttpRequest();
+                http.open("DELETE", '/users1');
+                http.setRequestHeader("Content-Type", "application/json");
+                const data = JSON.stringify({value: document.getElementById('input').value.toLowerCase()});
+                http.send(data);
+                http.onload = () => {
+                    document.querySelector("#save_data").innerHTML = "";
+                    document.querySelector("#save_data").innerHTML += '<h6 class="alert alert-info" role="alert"> Saved: </h6>';
+                    let users = JSON.parse(http.responseText);
+                    for (let i = 0; i < users.value.length; i ++) {
+                        document.querySelector("#save_data").innerHTML += '<li> <a target="_blank" href=' + "https://github.com/" + users.value[i] + ">" + users.value[i] + "</a> </li>";
+                    }
+                    document.querySelector("#warning").innerHTML = '<h6 class="alert alert-warning" role="alert">' + "User deleted!" + "</h6>";
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector("#search").addEventListener("click", searchData);
+            document.querySelector("#save").addEventListener("click", saveData);
+            document.querySelector("#delete").addEventListener("click", deleteData);
+        }, false);
+    })();
+</script>
+
+<%- include("layouts/footer") -%>

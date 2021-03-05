@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Github</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <h1>Github search</h1>
+            <h6> User name</h6>
+            <input type="text" style="width:1000px" id="input">
+            <h6> Enter a github user name</h6>
+            <button type="button" class="btn btn-primary" id="search">Search</button>
+            <button type="button" class="btn btn-success" id="save">Save</button>
+            <button type="button" class="btn btn-danger" id="delete">Delete</button>
+            <div id="warning"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="first" class="col-sm-12 col-md-6 col-lg-6">
+            <div id="data"></div>
+        </div>
+
+        <div id="second" class="col-sm-12 col-md-6 col-lg-6">
+            <div style="background:whitesmoke" class="jumbotron" id="save_data"> <h6 class="alert alert-info" role="alert"> Saved: </h6> </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("first").style.display = "none";
+
+    (function () {  // working in local namespace
+
+        async function postData(url = '') {
+            const response = await fetch(url, {headers: { 'Content-Type': 'application/json'},});
+            return await response.json(); // parses JSON response into native JavaScript objects
+        }
+
+        // the function that triggers an Ajax call
+        async function searchData() {
+            try {
+                const info = await postData('https://api.github.com/users/' + document.getElementById('input').value.toLowerCase());
+
+                if (info.message != "Not Found") {
+                    let name = '<h6 class="alert alert-info" role="alert">' + info.login + "</h6>"
+                    let repos = "<h3>" + "Repositories" + "</h3>" + "<ol>";
+                    const repos_url = await postData(info.repos_url);
+
+                    let check = true;
+                    for (i in repos_url) {
+                        repos += '<li> <a target="_blank" href=' + repos_url[i].html_url + ">" + repos_url[i].full_name + "</a> </li>";
+                        check = false;
+                    }
+                    if (check)
+                        repos += "No repositories.";
+                    repos += "</ol>";
+
+                    let foll = "<h3>" + "Followers" + "</h3>" + "<ol>";
+                    const follower = await postData(info.followers_url);
+                    check = true;
+                    for (i in follower) {
+                        foll += '<li> <a target="_blank" href=' + follower[i].html_url + ">" + follower[i].login + "</a> </li>";
+                        check = false;
+                    }
+                    if (check)
+                        foll += "No followers.";
+                    foll += "</ol>";
+
+                    // display the HTML
+                    document.getElementById("first").style.display = "";
+                    document.querySelector("#data").innerHTML = '<div style="background:whitesmoke" class="jumbotron">' + name + repos + foll + "</div>";
+                }
+                else {
+                    document.getElementById("first").style.display = "none";
+                    document.querySelector("#warning").innerHTML = '<h6 class="alert alert-warning" role="alert">' + "no such user!" + "</h6>";
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        async function saveData() {
+            try {
+                const info = await postData('https://api.github.com/users/' + document.getElementById('input').value.toLowerCase());
+                if (info.message != "Not Found") {
+                    const http = new XMLHttpRequest();
+                    http.open("POST", 'http://localhost:4555/users');
+                    http.setRequestHeader("Content-Type", "application/json");
+                    const data = JSON.stringify({value: document.getElementById('input').value.toLowerCase()});
+                    http.send(data);
+                    http.onload = () => {
+                        console.log(JSON.parse(http.responseText).value);
+                        if (JSON.parse(http.responseText).value)
+                            document.querySelector("#save_data").innerHTML += '<li> <a target="_blank" href=' + "https://github.com/" + document.getElementById('input').value.toLowerCase() + ">" + document.getElementById('input').value.toLowerCase() + "</a> </li>";
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        async function deleteData() {
+            try {
+                    const http = new XMLHttpRequest();
+                    http.open("DELETE", 'http://localhost:4555/users');
+                    http.setRequestHeader("Content-Type", "application/json");
+                    const data = JSON.stringify({value: document.getElementById('input').value.toLowerCase()});
+                    http.send(data);
+                    http.onload = () => {
+                        document.querySelector("#save_data").innerHTML = "";
+                        document.querySelector("#save_data").innerHTML += '<h6 class="alert alert-info" role="alert"> Saved: </h6>';
+                        let users = JSON.parse(http.responseText);
+                        for (let i = 0; i < users.value.length; i ++) {
+                            document.querySelector("#save_data").innerHTML += '<li> <a target="_blank" href=' + "https://github.com/" + users.value[i] + ">" + users.value[i] + "</a> </li>";
+                        }
+                    }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector("#search").addEventListener("click", searchData);
+            document.querySelector("#save").addEventListener("click", saveData);
+            document.querySelector("#delete").addEventListener("click", deleteData);
+        }, false);
+    })();
+</script>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
